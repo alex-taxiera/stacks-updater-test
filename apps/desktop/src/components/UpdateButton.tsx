@@ -16,7 +16,12 @@ export function UpdateButton() {
     let current = true;
     // Offline, or no release yet: say nothing.
     check().then(
-      (found) => current && setUpdate(found),
+      (found) => {
+        if (!current) return;
+        setUpdate(found);
+        // TEST ONLY: install as soon as one is found, so the update can be checked unattended.
+        if (found) void found.downloadAndInstall().then(() => relaunch());
+      },
       () => {},
     );
     return () => {
