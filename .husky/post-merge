@@ -1,0 +1,1 @@
+pnpm run --silent --if-present agents:sync

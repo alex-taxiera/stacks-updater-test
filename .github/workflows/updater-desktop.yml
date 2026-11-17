@@ -1,0 +1,32 @@
+# Makes a release of desktop live for installed copies: when you publish one of its drafts
+# (`desktop@v1.2.3`), this copies that release's latest.json to the `desktop-updater`
+# release, which is where the app looks for updates. Each app has its own, so a repo's other
+# releases never reach it, and nothing reaches it until you publish.
+name: Updater desktop
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Point the updater at ${{ github.event.release.tag_name }}
+    if: startsWith(github.event.release.tag_name, 'desktop@v')
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      TAG: ${{ github.event.release.tag_name }}
+      UPDATER: desktop-updater
+    steps:
+      - run: gh release download "$TAG" --pattern latest.json --dir "$RUNNER_TEMP"
+      - name: Make the updater's release, the first time
+        run: |
+          gh release view "$UPDATER" > /dev/null 2>&1 ||
+            gh release create "$UPDATER" --prerelease --latest=false \
+              --title "Desktop updates" \
+              --notes "Where installed copies of Desktop look for updates. Not a release to download."
+      - run: gh release upload "$UPDATER" "$RUNNER_TEMP/latest.json" --clobber

@@ -1,0 +1,13 @@
+[package]
+name = "app-core"
+description = "What the apps do, without their windows"
+version.workspace = true
+edition.workspace = true
+publish = false
+
+[dependencies]
+serde.workspace = true
+ts-rs.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true

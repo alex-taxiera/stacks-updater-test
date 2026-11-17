@@ -1,0 +1,61 @@
+{
+  "name": "stacks-updater-test",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "typecheck": "tsc --noEmit && pnpm -r typecheck",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "skills": "intent list",
+    "stacks": "stacks",
+    "prepare": "husky",
+    "agents:sync": "node scripts/sync-agents.ts",
+    "postinstall": "pnpm run agents:sync",
+    "storybook": "pnpm -r --parallel --no-bail --if-present storybook",
+    "ci-storybook": "pnpm -r --parallel --no-bail --if-present ci-storybook",
+    "bindings": "cargo test -p app-core export_bindings && oxfmt apps/desktop/src/bindings"
+  },
+  "devDependencies": {
+    "@alex-taxiera/stacks": "catalog:",
+    "@tanstack/intent": "catalog:",
+    "@types/node": "catalog:",
+    "husky": "catalog:",
+    "lint-staged": "catalog:",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "typescript": "catalog:"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}": [
+      "oxlint --fix --no-error-on-unmatched-pattern",
+      "oxfmt --no-error-on-unmatched-pattern"
+    ],
+    "*.{json,jsonc,md,mdx,css,yml,yaml,html,toml}": "oxfmt --no-error-on-unmatched-pattern",
+    "*.rs": "cargo fmt --"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": ">=12",
+      "onFail": "error"
+    },
+    "runtime": {
+      "name": "node",
+      "version": ">=24",
+      "onFail": "warn"
+    }
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@12.21.0",
+  "intent": {
+    "skills": [
+      "@alex-taxiera/stacks"
+    ]
+  }
+}

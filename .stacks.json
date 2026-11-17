@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "cli": "0.1.0",
+  "repo": {
+    "name": "stacks-updater-test",
+    "title": "Updater Test",
+    "scope": "@stacks-updater-test",
+    "accent": "teal",
+    "github": "alex-taxiera/stacks-updater-test"
+  },
+  "ui": {
+    "package": "@stacks-updater-test/ui",
+    "storybookPort": 6008
+  },
+  "apps": [
+    {
+      "name": "desktop",
+      "title": "Desktop",
+      "stack": "tauri",
+      "kind": "app",
+      "dir": "apps/desktop",
+      "packageName": "desktop",
+      "deploy": "releases",
+      "addons": ["updater"],
+      "devPort": 3000,
+      "storybookPort": 6009
+    }
+  ]
+}

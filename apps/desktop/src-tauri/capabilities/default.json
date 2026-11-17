@@ -1,0 +1,13 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "What the main window may do: the app's own commands, the file picker, and opening web links in the browser. Only the main window: a window that shows pages from elsewhere gets its own, narrower capability.",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "dialog:allow-open",
+    "opener:allow-open-url",
+    "updater:default",
+    "process:allow-restart"
+  ]
+}

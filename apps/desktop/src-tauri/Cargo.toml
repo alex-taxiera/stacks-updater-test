@@ -1,0 +1,27 @@
+[package]
+name = "desktop"
+description = "Desktop"
+version.workspace = true
+edition.workspace = true
+publish = false
+
+[lib]
+# `_lib`, so it doesn't collide with the binary on Windows (cargo#8519).
+name = "desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+app-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tauri = { version = "2", features = [] }
+tauri-plugin-dialog = "2"
+tauri-plugin-opener = "2"
+
+# Desktop only: phones update through their stores.
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-process = "2"
+tauri-plugin-updater = "2"

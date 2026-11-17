@@ -1,0 +1,103 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "react", "jsx-a11y", "import", "unicorn", "oxc", "vitest"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn"
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "import/no-unassigned-import": [
+      "warn",
+      {
+        "allow": ["**/*.css"]
+      }
+    ],
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "@chakra-ui/react",
+            "importNames": [
+              "Accordion",
+              "ActionBar",
+              "Alert",
+              "Avatar",
+              "Blockquote",
+              "Breadcrumb",
+              "Card",
+              "Carousel",
+              "Checkbox",
+              "CheckboxCard",
+              "Clipboard",
+              "CloseButton",
+              "ColorPicker",
+              "Combobox",
+              "DataList",
+              "Dialog",
+              "Drawer",
+              "EmptyState",
+              "Field",
+              "FileUpload",
+              "HoverCard",
+              "Menu",
+              "NativeSelect",
+              "NumberInput",
+              "Pagination",
+              "PinInput",
+              "Popover",
+              "Progress",
+              "ProgressCircle",
+              "QrCode",
+              "RadioCard",
+              "RadioGroup",
+              "RatingGroup",
+              "ScrollArea",
+              "SegmentGroup",
+              "Select",
+              "Skeleton",
+              "Slider",
+              "Splitter",
+              "Status",
+              "Steps",
+              "Switch",
+              "Tag",
+              "TagsInput",
+              "Timeline",
+              "Toaster",
+              "Toggle",
+              "Tooltip"
+            ],
+            "message": "Use the snippet from @stacks-updater-test/ui instead (e.g. @stacks-updater-test/ui/tooltip for Tooltip). If it is missing, add it with `pnpm --filter @stacks-updater-test/ui exec chakra snippet add <name> --tsx --outdir src/components/ui`."
+          }
+        ]
+      }
+    ]
+  },
+  "ignorePatterns": ["**/dist", "**/storybook-static", "**/routeTree.gen.ts", ".agents/skills"],
+  "overrides": [
+    {
+      "files": ["packages/ui/src/components/ui/**"],
+      "rules": {
+        "eslint/no-shadow": "off",
+        "jsx-a11y/prefer-tag-over-role": "off",
+        "react/exhaustive-effect-dependencies": "off",
+        "react/immutability": "off",
+        "react/set-state-in-effect": "off",
+        "react-hooks/exhaustive-deps": "off",
+        "no-restricted-imports": "off"
+      }
+    },
+    {
+      "files": ["packages/ui/src/**", "**/.storybook/**", "apps/*/src/components/ui/**"],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ]
+}
