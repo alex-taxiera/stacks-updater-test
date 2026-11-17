@@ -1,6 +1,7 @@
 # Builds apps/desktop's installers for Windows, macOS and Linux when a version tag
 # (`desktop@v1.2.3`) is pushed, or when run by hand for one platform or all, and attaches them
-# to a draft release named for the version in tauri.conf.json. Publishing the draft is up to you.
+# to a draft release named for the version in tauri.conf.json. Publishing the draft is up to you;
+# when that makes the tag, there's nothing left to build.
 name: Release desktop
 
 on:
@@ -26,7 +27,18 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.pick.outputs.matrix }}
+      published: ${{ steps.published.outputs.published }}
     steps:
+      # Publishing a draft made by hand creates its tag, which is a tag push; that release is done.
+      - id: published
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          draft=$(gh release view "$GITHUB_REF_NAME" --json isDraft --jq .isDraft 2>/dev/null || echo none)
+          echo "published=$([ "$draft" = false ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
       - id: pick
         env:
           # A tag push builds everything.
@@ -42,6 +54,7 @@ jobs:
   build:
     name: Build (${{ matrix.name }})
     needs: plan
+    if: needs.plan.outputs.published != 'true'
     strategy:
       fail-fast: false
       matrix:
